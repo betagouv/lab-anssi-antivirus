@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 simule_clamd() {
   clamd_recu="$(mktemp)"
 

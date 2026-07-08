@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+
+# shellcheck source=tests/fixtures/clamd.sh
 source ./fixtures/clamd.sh
 
 setup() {

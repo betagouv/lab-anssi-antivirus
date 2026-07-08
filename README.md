@@ -10,4 +10,6 @@ nix-shell
 
 # lancer les tests
 $ bash_unit tests/*.test.sh
+# valide le formattage
+$ treefmt
 ```
