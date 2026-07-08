@@ -6,7 +6,10 @@ let
   inherit (pkgs)
     bash_unit
     mkShell
+    netcat
     npins
+    openssl
+    socat
     ;
 in
 {
@@ -17,7 +20,10 @@ in
     mkShell {
       buildInputs = [
         bash_unit
+        netcat
         npins
+        openssl
+        socat
         treefmt
       ];
     };
