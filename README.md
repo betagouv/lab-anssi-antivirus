@@ -7,4 +7,7 @@
 ```shell
 # obtenir un environnement contenant les outils nécessaires
 nix-shell
+
+# lancer les tests
+$ bash_unit tests/*.test.sh
 ```

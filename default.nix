@@ -4,6 +4,7 @@
 }:
 let
   inherit (pkgs)
+    bash_unit
     mkShell
     npins
     ;
@@ -15,6 +16,7 @@ in
     in
     mkShell {
       buildInputs = [
+        bash_unit
         npins
         treefmt
       ];
