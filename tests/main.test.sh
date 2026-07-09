@@ -49,3 +49,19 @@ test_un_client_avec_un_bon_certificat_peut_parler_avec_clamd() {
 
   assert "grep $message $clamd_recu"
 }
+
+test_un_client_avec_un_mauvais_certificat_ne_peut_pas_parler_avec_clamd() {
+  genere_authorite_de_certification ca.bon.crt ca.bon.key
+  genere_authorite_de_certification ca.mauvais.crt ca.mauvais.key
+
+  genere_demande_de_signature_de_certificat_client client.key client.csr
+  signe_certificat_client ca.mauvais.crt ca.mauvais.key client.csr client.crt
+
+  run ca.bon.crt >/dev/null &
+  sleep 0.2
+
+  message="foo"
+  echo "foo" | openssl s_client -key client.key -cert client.crt -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 2>/dev/null
+
+  assert_fail "grep $message $clamd_recu"
+}
