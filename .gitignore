@@ -1,2 +1,8 @@
 result
-s.*
+
+# fichiers générés pour faire du TLS
+*.ca
+*.crt
+*.csr
+*.key
+*.pem
