@@ -22,12 +22,12 @@ test_peut_envoyer_un_message_a_clamd() {
   assert "grep $message $clamd_recu"
 }
 
-test_peut_communiquer_avec_clamd_via_un_tunnel_TLS() {
+test_un_client_sans_certificat_ne_peut_pas_parler_avec_clamd() {
   run >/dev/null &
   sleep 0.2
 
   message="foo"
   echo "foo" | openssl s_client -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 2>/dev/null
 
-  assert "grep $message $clamd_recu"
+  assert_fail "grep $message $clamd_recu"
 }

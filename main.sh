@@ -34,7 +34,7 @@ run() {
   genere_certificat_serveur
   echo "expose \`clamd\` via TLS..."
   socat 2>/dev/null \
-    "OPENSSL-LISTEN:$PORT_A_EXPOSER,cert=$pem_serveur,verify=0,fork" \
+    "OPENSSL-LISTEN:$PORT_A_EXPOSER,cert=$pem_serveur,verify=1,fork" \
     "TCP:${CLAMD_ADRESSE}:${CLAMD_PORT}" \
     &
 }
