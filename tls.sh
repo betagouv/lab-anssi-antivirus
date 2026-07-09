@@ -3,9 +3,9 @@
 SUBJECT="/C=FR/ST=Paris/L=Paris/O=CompanyName/OU=CompanySectionName/CN=localhost"
 
 genere_certificat_serveur() {
-  clef_serveur=s.key
-  certificat_serveur=s.crt
-  pem_serveur=s.pem
+  clef_serveur="$1"
+  certificat_serveur="$2"
+  pem_serveur="$3"
 
   openssl genpkey 2>/dev/null \
     -algorithm RSA \
@@ -23,13 +23,11 @@ genere_certificat_serveur() {
 
   cat "$clef_serveur" "$certificat_serveur" > "$pem_serveur"
   chmod 600 "$pem_serveur"
-
-  export pem_serveur
 }
 
 genere_authorite_de_certification() {
-  certificat_ac=ca.crt
-  clef_ac=ca.key
+  certificat_ac="$1"
+  clef_ac="$2"
 
   openssl genpkey 2>/dev/null \
     -algorithm RSA \
@@ -44,23 +42,21 @@ genere_authorite_de_certification() {
     -out "$certificat_ac" \
     -days 365 \
     -subj "$SUBJECT"
-
-  export certificat_ac
 }
 
 signe_certificat_client() {
-  certificat_client="$1"
-  certificat_client_signe=client.crt
+  certificat_ac="$1"
+  clef_ac="$2"
+  requete_client="$3"
+  certificat_client_signe="$4"
 
   openssl req \
     -x509 \
-    -in "$certificat_client" \
+    -in "$requete_client" \
     -CA "$certificat_ac" \
     -CAkey "$clef_ac" \
     -out "$certificat_client_signe" \
     -nodes \
     -days 365 \
     -subj "$SUBJECT"
-
-  export certificat_client_signe
 }

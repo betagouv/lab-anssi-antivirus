@@ -37,15 +37,15 @@ test_un_client_sans_certificat_ne_peut_pas_parler_avec_clamd() {
 }
 
 test_un_client_avec_un_bon_certificat_peut_parler_avec_clamd() {
-  genere_authorite_de_certification
-  genere_demande_de_signature_de_certificat_client
-  signe_certificat_client "$demande_de_signature_de_certificat_client"
+  genere_authorite_de_certification ca.crt ca.key
+  genere_demande_de_signature_de_certificat_client client.key client.csr
+  signe_certificat_client ca.crt ca.key client.csr client.crt
 
-  run "$certificat_ac" >/dev/null &
+  run ca.crt >/dev/null &
   sleep 0.2
 
   message="foo"
-  echo "foo" | openssl s_client -key "$(pwd)/$clef_client" -cert "$(pwd)/$certificat_client_signe" -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 2>/dev/null
+  echo "foo" | openssl s_client -key client.key -cert client.crt -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 2>/dev/null
 
   assert "grep $message $clamd_recu"
 }

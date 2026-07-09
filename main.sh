@@ -10,11 +10,11 @@ run() {
   authorite_de_certification="$1"
 
   echo "genere le certificat du serveur..."
-  genere_certificat_serveur
+  genere_certificat_serveur s.key s.crt s.pem
 
   echo "expose \`clamd\` via TLS..."
   socat 2>/dev/null \
-    "OPENSSL-LISTEN:$PORT_A_EXPOSER,cert=$pem_serveur,cafile=$authorite_de_certification,verify=1,fork" \
+    "OPENSSL-LISTEN:$PORT_A_EXPOSER,cert=s.pem,cafile=$authorite_de_certification,verify=1,fork" \
     "TCP:${CLAMD_ADRESSE}:${CLAMD_PORT}" \
     &
 }

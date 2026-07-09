@@ -4,8 +4,8 @@
 source ../tls.sh
 
 genere_demande_de_signature_de_certificat_client() {
-  clef_client=client.key
-  demande_de_signature_de_certificat_client=client.csr
+  clef_client="$1"
+  demande_de_signature_de_certificat_client="$2"
 
   openssl genpkey 2>/dev/null \
     -algorithm RSA \
@@ -17,7 +17,4 @@ genere_demande_de_signature_de_certificat_client() {
     -key "$clef_client" \
     -out "$demande_de_signature_de_certificat_client" \
     -subj "$SUBJECT"
-
-  export demande_de_signature_de_certificat_client
-  export clef_client
 }
