@@ -8,9 +8,10 @@ source "$(dirname "${BASH_SOURCE[0]}")/tls.sh"
 
 run() {
   authorite_de_certification="$1"
+  domaine_expose="$2"
 
   echo "genere le certificat du serveur..."
-  genere_certificat_serveur s.key s.crt s.pem
+  genere_certificat_serveur s.key s.crt s.pem "$domaine_expose"
 
   echo "expose \`clamd\` via TLS..."
   socat 2>/dev/null \

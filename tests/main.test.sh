@@ -71,3 +71,15 @@ test_un_client_avec_un_mauvais_certificat_ne_peut_pas_parler_avec_clamd() {
 
   assert_fail "grep $message $clamd_recu"
 }
+
+test_peut_etre_lance_pour_etre_expose_sur_un_domaine_precis() {
+  genere_authorite_de_certification ca.crt ca.key
+  domaine="truc.cleverapps.io"
+
+  run ca.crt "$domaine" >/dev/null &
+  sleep "$DELAI"
+
+  domaine_du_certificat="$(extrait_commonName <(openssl s_client -connect 127.0.0.1:4040 2>/dev/null))"
+
+  assert_equals "$domaine" "$domaine_du_certificat"
+}
