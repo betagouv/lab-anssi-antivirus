@@ -18,3 +18,8 @@ genere_demande_de_signature_de_certificat_client() {
     -out "$demande_de_signature_de_certificat_client" \
     -subj "$SUBJECT_POUR_CLIENT"
 }
+
+extrait_commonName() {
+  certificat="$1"
+  openssl x509 -in "$certificat" -noout -subject -nameopt multiline | grep commonName | cut -d'=' -f2 | tr -d ' '
+}
