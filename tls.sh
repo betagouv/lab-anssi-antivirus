@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-SUBJECT="/C=FR/ST=Paris/L=Paris/O=CompanyName/OU=CompanySectionName/CN=localhost"
+SUBJECT_POUR_CLIENT="/C=FR/ST=Paris/L=Paris/O=CompanyName/OU=CompanySectionName/CN=localhost"
 
 genere_certificat_serveur() {
   clef_serveur="$1"
   certificat_serveur="$2"
   pem_serveur="$3"
+  domaine="${4:-localhost}"
 
   openssl genpkey 2>/dev/null \
     -algorithm RSA \
@@ -19,7 +20,7 @@ genere_certificat_serveur() {
     -key "$clef_serveur" \
     -out "$certificat_serveur" \
     -days 365 \
-    -subj "$SUBJECT"
+    -subj "/C=FR/ST=Paris/L=Paris/O=CompanyName/OU=CompanySectionName/CN=$domaine"
 
   cat "$clef_serveur" "$certificat_serveur" > "$pem_serveur"
   chmod 600 "$pem_serveur"
@@ -41,7 +42,7 @@ genere_authorite_de_certification() {
     -key "$clef_ac" \
     -out "$certificat_ac" \
     -days 365 \
-    -subj "$SUBJECT"
+    -subj "$SUBJECT_POUR_CLIENT"
 }
 
 signe_certificat_client() {
@@ -58,5 +59,5 @@ signe_certificat_client() {
     -out "$certificat_client_signe" \
     -nodes \
     -days 365 \
-    -subj "$SUBJECT"
+    -subj "$SUBJECT_POUR_CLIENT"
 }

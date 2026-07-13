@@ -16,5 +16,5 @@ genere_demande_de_signature_de_certificat_client() {
     -new \
     -key "$clef_client" \
     -out "$demande_de_signature_de_certificat_client" \
-    -subj "$SUBJECT"
+    -subj "$SUBJECT_POUR_CLIENT"
 }
