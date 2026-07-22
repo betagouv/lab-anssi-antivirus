@@ -9,12 +9,14 @@ source "$(dirname "${BASH_SOURCE[0]}")/tls.sh"
 run() {
   authorite_de_certification="$1"
   domaine_expose="$2"
+  journal="$3"
 
   echo "genere le certificat du serveur..."
   genere_certificat_serveur s.key s.crt s.pem "$domaine_expose"
 
   echo "expose \`clamd\` via TLS..."
-  socat 2>/dev/null \
+  socat \
+    -r "$journal" \
     "OPENSSL-LISTEN:$PORT_A_EXPOSER,cert=s.pem,cafile=$authorite_de_certification,verify=1,fork" \
     "TCP:${CLAMD_ADRESSE}:${CLAMD_PORT}" \
     &
