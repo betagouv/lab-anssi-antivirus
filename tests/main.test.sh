@@ -37,7 +37,7 @@ test_un_client_sans_certificat_ne_peut_pas_parler_avec_clamd() {
   sleep "$DELAI"
 
   message="foo"
-  echo "foo" | openssl s_client -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 2>/dev/null
+  echo "$message" | openssl s_client -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 2>/dev/null
 
   assert_fail "grep $message $clamd_recu"
 }
@@ -51,7 +51,7 @@ test_un_client_avec_un_bon_certificat_peut_parler_avec_clamd() {
   sleep "$DELAI"
 
   message="foo"
-  echo "foo" | openssl s_client -key client.key -cert client.crt -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 2>/dev/null
+  echo "$message" | openssl s_client -key client.key -cert client.crt -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 2>/dev/null
 
   assert "grep $message $clamd_recu"
 }
@@ -67,7 +67,7 @@ test_un_client_avec_un_mauvais_certificat_ne_peut_pas_parler_avec_clamd() {
   sleep "$DELAI"
 
   message="foo"
-  echo "foo" | openssl s_client -key client.key -cert client.crt -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 2>/dev/null
+  echo "$message" | openssl s_client -key client.key -cert client.crt -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 2>/dev/null
 
   assert_fail "grep $message $clamd_recu"
 }
