@@ -15,7 +15,7 @@ run() {
   genere_certificat_serveur s.key s.crt s.pem "$domaine_expose"
 
   echo "expose \`clamd\` via TLS..."
-  socat \
+  socat 2>/dev/null \
     -r "$journal" \
     "OPENSSL-LISTEN:$PORT_A_EXPOSER,cert=s.pem,cafile=$authorite_de_certification,verify=1,fork" \
     "TCP:${CLAMD_ADRESSE}:${CLAMD_PORT}" \
