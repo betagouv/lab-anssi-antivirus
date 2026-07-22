@@ -24,7 +24,7 @@ setup() {
 teardown() {
   nettoie_clamd_simulation
 
-  pkill -f "socat OPENSSL-LISTEN:"
+  pkill -f "socat -r .* OPENSSL-LISTEN:"
 
   rm {.,..}/*.{crt,key,pem} 2>/dev/null
   rm --force socat.in.log
