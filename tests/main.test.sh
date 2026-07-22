@@ -13,6 +13,10 @@ source ./fixtures/tls.sh
 # on a besoin d'un petit délai au démarrage de la plomberie qui expose `clamav` en TLS avant de communiquer avec.
 DELAI=0.1
 
+openssl_client() {
+  openssl s_client -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 $@ 2>/dev/null
+}
+
 setup() {
   simule_clamd
 }
@@ -37,7 +41,7 @@ test_un_client_sans_certificat_ne_peut_pas_parler_avec_clamd() {
   sleep "$DELAI"
 
   message="foo"
-  echo "$message" | openssl s_client -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 2>/dev/null
+  echo "$message" | openssl_client
 
   assert_fail "grep $message $clamd_recu"
 }
@@ -51,7 +55,7 @@ test_un_client_avec_un_bon_certificat_peut_parler_avec_clamd() {
   sleep "$DELAI"
 
   message="foo"
-  echo "$message" | openssl s_client -key client.key -cert client.crt -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 2>/dev/null
+  echo "$message" | openssl_client -key client.key -cert client.crt
 
   assert "grep $message $clamd_recu"
 }
@@ -67,7 +71,7 @@ test_un_client_avec_un_mauvais_certificat_ne_peut_pas_parler_avec_clamd() {
   sleep "$DELAI"
 
   message="foo"
-  echo "$message" | openssl s_client -key client.key -cert client.crt -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 2>/dev/null
+  echo "$message" | openssl_client -key client.key -cert client.crt
 
   assert_fail "grep $message $clamd_recu"
 }
