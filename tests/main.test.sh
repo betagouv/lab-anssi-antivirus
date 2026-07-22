@@ -24,10 +24,10 @@ setup() {
 teardown() {
   nettoie_clamd_simulation
 
-  pgrep -f "socat OPENSSL-LISTEN:" | xargs --no-run-if-empty kill
+  pkill -f "socat OPENSSL-LISTEN:"
 
   rm {.,..}/*.{crt,key,pem} 2>/dev/null
-  rm socat.in.log
+  rm --force socat.in.log
 }
 
 test_peut_envoyer_un_message_a_clamd() {
