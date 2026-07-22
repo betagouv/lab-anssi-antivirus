@@ -14,7 +14,7 @@ source ./fixtures/tls.sh
 DELAI=0.1
 
 openssl_client() {
-  openssl s_client -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 $@ 2>/dev/null
+  openssl s_client -quiet -no_ign_eof -noservername -connect 127.0.0.1:4040 "$@" 2>/dev/null
 }
 
 setup() {
